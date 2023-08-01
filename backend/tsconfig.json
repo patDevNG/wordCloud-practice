@@ -4,6 +4,19 @@
     "target": "esnext",
     "module": "nodenext",
     "skipLibCheck": true,
-    "strict": true
+    "typeRoots": [
+      "node_modules/@types",
+      "./types",
+    ],
+    "noImplicitAny": false,
+    "strict": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "nodenext",
+    "baseUrl": "./",
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "types/*"
+      ]}
   }
 }

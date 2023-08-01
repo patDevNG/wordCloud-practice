@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
+import WordCloud from "react-wordcloud";
 import "./App.css";
 
 export function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error>();
-  const [html, setHtml] = useState("");
+  const [error, setError] = useState<Error | null>(null);
+  const [wordFreq, setWordFreq] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    fetch("/api/challenge")
-      .then((r) => r.text())
-      .then(setHtml)
-      .catch(setError)
-      .finally(() => setIsLoading(false));
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/challenge");
+        const data = await response.json();
+        setWordFreq(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   if (error != null) {
@@ -19,10 +28,15 @@ export function App() {
     return <div>Error! Check console...</div>;
   }
 
+  const words = wordFreq.data ? Object.entries(wordFreq.data).map(([text, value]) => ({ text, value })) : [];
+
   return (
     <div className="App">
-      {isLoading ? "Loading..." : null}
-      <article dangerouslySetInnerHTML={{ __html: html }} />
+      {isLoading ? "Loading..." : (
+        <div style={{ height: '700px', width: '100%' }}>
+          <WordCloud words={words} />
+        </div>
+      )}
     </div>
   );
 }
