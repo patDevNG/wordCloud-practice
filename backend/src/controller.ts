@@ -20,7 +20,7 @@ export class WordCloudController implements IController {
    res.status(200).send(result);
   }
 
-  @httpGet('/challenge')
+  @httpGet('/process-feeds')
   public async processFeeds(req: Request, res: Response, next: NextFunction): Promise<void> {
     const result = await this.wordCloudService.processFeeds();
     res.status(200).json({ data: result });
