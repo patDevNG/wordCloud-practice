@@ -13,7 +13,7 @@ export function App() {
         const response = await fetch("/api/process-feeds");
         const data = await response.json();
         setWordFreq(data);
-      } catch (error) {
+      } catch (error : any) {
         setError(error);
       } finally {
         setIsLoading(false);
